@@ -24,7 +24,7 @@ AWS Services
     └── DynamoDB (tracks job records)
 ```
 
-**Use Case:** This service demonstrates a typical AWS serverless architecture perfect for learning and testing integration testing strategies.
+**Use Case:** This service demonstrates a typical AWS serverless architecture for learning and testing integration testing strategies.
 
 ---
 
@@ -252,6 +252,79 @@ https://YOUR-API-ID.execute-api.eu-west-1.amazonaws.com/dev/sitemap/status/{jobI
 ```
 
 (You'll need a valid `jobId` from a POST request first)
+
+### Option 4: Test with Insomnia
+
+**Step 1: Install Insomnia**
+
+Download and install Insomnia from [insomnia.rest](https://insomnia.rest/download) if you haven't already.
+
+**Step 2: Import the API Collection**
+
+This project includes a ready-to-use Insomnia collection with all API endpoints pre-configured.
+
+1. Open **Insomnia**
+2. Click **Create** → **Import From** → **File**
+3. Navigate to your project folder and select `sitemaps-hack-day-apis.yaml`
+4. Click **Scan** and then **Import**
+5. The collection "Sitemaps Hack Day APIs" will appear with all endpoints
+
+**Step 3: Set Up Environment Variables**
+
+1. Click the **dropdown next to "No Environment"** at the top
+2. Select **"Manage Environments"**
+3. Click **"+"** to create a new environment
+4. Name it: `Sitemap Dev`
+5. Add this JSON (replace with your actual API URL from CDK output):
+```json
+{
+  "base_url": "https://YOUR-API-ID.execute-api.eu-west-1.amazonaws.com/dev"
+}
+```
+6. Click **"Done"**
+7. Select **"Sitemap Dev"** from the environment dropdown
+
+**Step 4: Test the Endpoints**
+
+The imported collection includes:
+
+1. **Generate Sitemap** (POST)
+   - Pre-configured with sample request body
+   - Click **Send** to generate a sitemap
+   - Copy the `jobId` from the response
+
+2. **Get Job Status** (GET)
+   - Replace `{jobId}` in the URL with actual jobId
+   - Click **Send** to check status
+
+3. **View Sitemap XML** (GET)
+   - Use the `s3Url` from the generate response
+   - Click **Send** to view the XML sitemap
+
+4. **Error Test - Missing URLs** (POST)
+   - Tests validation with missing required fields
+   - Expected: 400 error
+
+5. **Error Test - Invalid URLs** (POST)
+   - Tests validation with malformed URLs
+   - Expected: 400 error with invalid URL list
+
+6. **Error Test - Job Not Found** (GET)
+   - Tests with non-existent jobId
+   - Expected: 404 error
+
+**Step 5: Verify Responses**
+
+For each request, check:
+- ✅ Status code matches expected (200, 202, 400, 404)
+- ✅ Response body structure is correct
+- ✅ Data types and values are valid
+
+**Tips:**
+- Use **Cmd/Ctrl + Enter** to quickly send requests
+- Click on **Timeline** tab to see request/response details
+- Use **Preview** tab for formatted JSON viewing
+- Check **Headers** tab to see Content-Type and CORS headers
 
 ---
 

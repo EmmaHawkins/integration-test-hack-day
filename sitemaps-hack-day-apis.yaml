@@ -1,0 +1,104 @@
+type: collection.insomnia.rest/5.0
+name: AWS Sitemap Generator API
+meta:
+  id: wrk_4964e1a82962415c9286777b2784a897
+  created: 1765201397054
+  modified: 1765201397054
+collection:
+  - url: "{{ _.sitemaps_base.base_url }}dev/sitemap/generate"
+    name: Generate Sitemap
+    meta:
+      id: req_57e642f0d5154b10ad13119a6685a7f5
+      created: 1765201628348
+      modified: 1765206806345
+      isPrivate: false
+      sortKey: -1765201628348
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "websiteId": "final-test",
+          "urls": [
+            "https://example.com/",
+            "https://example.com/about",
+            "https://example.com/products"
+          ]
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.0.2
+        id: pair_c60de4f278724ca08100556894fa5d58
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.sitemaps_base.base_url
+      }}dev/sitemap/status/5fc38880-58a9-432e-9548-3d39dafc1ecf"
+    name: Get Status Endpoint
+    meta:
+      id: req_c7eff5e37ead44ceb585279bec9404a0
+      created: 1765203564748
+      modified: 1765206853104
+      isPrivate: false
+      sortKey: -1765203564748
+    method: GET
+    body:
+      mimeType: application/json
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.0.2
+        id: pair_81bd3d78ab104764b81ab9a624ea1a4e
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: https://sitemap-generator-005093071246-eu-west-1.s3.amazonaws.com/final-test/5fc38880-58a9-432e-9548-3d39dafc1ecf/sitemap.xml
+    name: Get Sitemap XML
+    meta:
+      id: req_dfaccdb394004d41a046c5cb3470ac96
+      created: 1765203732589
+      modified: 1765206953685
+      isPrivate: false
+      sortKey: -1765203732589
+    method: GET
+    body:
+      mimeType: application/json
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.0.2
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_62f65b533bb3112bef489e9120e39baf2d43d92f
+    created: 1765201397060
+    modified: 1765201397060
+environments:
+  name: Base Environment
+  meta:
+    id: env_62f65b533bb3112bef489e9120e39baf2d43d92f
+    created: 1765201397058
+    modified: 1765201397058
+    isPrivate: false
