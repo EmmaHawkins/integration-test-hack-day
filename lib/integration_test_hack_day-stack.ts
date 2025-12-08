@@ -27,8 +27,14 @@ export class IntegrationTestHackDayStack extends cdk.Stack {
           allowedHeaders: ['*']
         }
       ],
-      publicReadAccess: false,
-      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL
+      publicReadAccess: true,
+      blockPublicAccess: new s3.BlockPublicAccess({
+        blockPublicAcls: false,
+        blockPublicPolicy: false,
+        ignorePublicAcls: false,
+        restrictPublicBuckets: false
+      }),
+      objectOwnership: s3.ObjectOwnership.OBJECT_WRITER
     });
 
     this.table = new dynamodb.Table(this, 'SitemapJobsTable', {

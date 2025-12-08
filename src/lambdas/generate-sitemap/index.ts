@@ -72,13 +72,13 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
 
     const sitemapXml = SitemapBuilder.buildSitemapXml(sitemapUrls);
 
-    const s3Key = `${request.websiteId}/${job}/sitemap.xml`;
+    const s3Key = `${request.websiteId}/${jobId}/sitemap.xml`;
 
     await s3Client.send(new PutObjectCommand({
       Bucket: BUCKET_NAME,
       Key: s3Key,
       Body: sitemapXml,
-      ContentType: 'application/json',
+      ContentType: 'application/xml',
       Metadata: {
         websiteId: request.websiteId,
         jobId: jobId,
