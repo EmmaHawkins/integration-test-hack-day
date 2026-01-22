@@ -6,10 +6,10 @@ import { Environment } from 'aws-cdk-lib/aws-appconfig';
 
 const app = new cdk.App();
 
-new IntegrationTestHackDayStack(app, 'SitemapsGeneratorStack', {
+new IntegrationTestHackDayStack(app, 'SitemapsGeneratorStack-{INSERT_UNIQUE_VALUE}}', {
   env: {
     account: process.env.CDK_DEFAULT_ACCOUNT,
-    region: process.env.CDK_DEFAULTREGION || 'eu-west-1'
+    region: process.env.CDK_DEFAULT_REGION || 'eu-west-1'
   },
   description: 'Sitemap Generator Service for Integration Testing Hack Day',
   tags: {

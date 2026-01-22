@@ -1,10 +1,10 @@
 import * as cdk from 'aws-cdk-lib';
-import { Construct } from 'constructs';
-import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as lambdaNodejs from 'aws-cdk-lib/aws-lambda-nodejs';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import { Construct } from 'constructs';
 import * as path from 'path';
 
 export class IntegrationTestHackDayStack extends cdk.Stack {
@@ -17,7 +17,7 @@ export class IntegrationTestHackDayStack extends cdk.Stack {
     super(scope, id, props);
 
     this.bucket = new s3.Bucket(this, 'SitemapBucket', {
-      bucketName: `sitemap-generator-${this.account}-${this.region}`,
+      bucketName: `sitemap-${this.account}-${this.region}-${Date.now()}`,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
       cors: [
@@ -38,7 +38,7 @@ export class IntegrationTestHackDayStack extends cdk.Stack {
     });
 
     this.table = new dynamodb.Table(this, 'SitemapJobsTable', {
-      tableName: 'sitemap-jobs',
+      tableName: `sitemap-jobs-${this.stackName.toLowerCase()}`,
       partitionKey: { name: 'jobId', type: dynamodb.AttributeType.STRING },
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
@@ -52,7 +52,7 @@ export class IntegrationTestHackDayStack extends cdk.Stack {
     });
 
     const generateSitemapFn = new lambdaNodejs.NodejsFunction(this, 'GenerateSitemap', {
-      functionName: 'sitemap-generator',
+      functionName: `sitemap-generator-${this.stackName.toLowerCase()}`,
       entry: path.join(__dirname, '../src/lambdas/generate-sitemap/index.ts'),
       handler: 'handler',
       runtime: lambda.Runtime.NODEJS_22_X,
@@ -70,7 +70,7 @@ export class IntegrationTestHackDayStack extends cdk.Stack {
     });
 
     const getStatusFn = new lambdaNodejs.NodejsFunction(this, 'GetStatus', {
-      functionName: 'sitemap-get-status',
+      functionName: `sitemap-get-status-${this.stackName.toLowerCase()}`,
       entry: path.join(__dirname, '../src/lambdas/get-status/index.ts'),
       handler: 'handler',
       runtime: lambda.Runtime.NODEJS_22_X,
@@ -117,19 +117,19 @@ export class IntegrationTestHackDayStack extends cdk.Stack {
     new cdk.CfnOutput(this, 'ApiUrl', {
       value: this.api.url,
       description: 'API Gateway endpoint URL',
-      exportName: 'SitemapApiUrl'
+      exportName: `SitemapApiUrl-${this.stackName}`
     });
 
     new cdk.CfnOutput(this, 'BucketName', {
       value: this.bucket.bucketName,
       description: 'S3 bucket for sitemaps',
-      exportName: 'SitemapBucketName'
+      exportName: `SitemapBucketName-${this.stackName}`
     });
 
     new cdk.CfnOutput(this, 'TableName', {
       value: this.table.tableName,
       description: 'DynamoDB table for job tracking',
-      exportName: 'SitemapTableName'
+      exportName: `SitemapTableName-${this.stackName}`
     });
   }
 }
